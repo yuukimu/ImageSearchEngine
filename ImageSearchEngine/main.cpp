@@ -14,6 +14,8 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
+#define RANKNUM 10
+
 using namespace std;
 
 // 文字列の分割
@@ -26,6 +28,10 @@ unordered_map<string, string> readHistgram();
 void getHistgram(std::string input_path, long *input_histgram);
 // 類似画像検索
 void searchSimilarImage(string input_path, unordered_map<string, string> histgram);
+// 距離が最大のインデックスを取得
+int getMaxIndex(const long *ary);
+// 結果のソート
+void sortResultData(string *img_list, long *dist_list);
 
 void split(const string &s, char delim, long *vec) {
     vector<string> elems;
@@ -76,7 +82,7 @@ vector<string> getImages(const char *path) {
     DIR *dp;
     dirent* entry;
     dp = opendir(path);
-    if (dp==NULL) exit(1);
+    if (dp==NULL) exit(-11);
     
     do {
         entry = readdir(dp);
@@ -113,19 +119,68 @@ void getHistgram(std::string input_path, long *input_histgram) {
 
 void searchSimilarImage(string input_path, unordered_map<string, string> histgram) {
     long input_histgram[48];
+    string img_list[RANKNUM];
+    long dist_list[RANKNUM] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+    int index = 0;
     getHistgram(input_path, input_histgram);
     for (auto itr = histgram.begin(); itr != histgram.end(); ++itr) {
         long distance = 0;
         long tmp[48];
         split(itr->second, ' ', tmp);
         for (int i = 0; i < 48; i++) {
-            distance += sqrt(pow(input_histgram[i]-tmp[i], 2));
+            distance += pow(input_histgram[i]-tmp[i], 2);
         }
-        cout << itr->first << ":" << distance << endl;
+        if (dist_list[RANKNUM-1] == -1) {
+            dist_list[index++] = distance;
+            if (index == RANKNUM) {
+                index = getMaxIndex(dist_list);
+            }
+        } else {
+            if (distance < dist_list[index]) {
+                img_list[index] = itr->first;
+                dist_list[index] = distance;
+                index = getMaxIndex(dist_list);
+            }
+        }
+//        cout << itr->first << ":" << distance << endl;
+    }
+    sortResultData(img_list, dist_list);
+    for (int i = 0; i < RANKNUM; i++) {
+        cout << img_list[i] << ":" << dist_list[i] << endl;
+    }
+}
+
+int getMaxIndex(const long *ary) {
+    int max_index = 0;
+    for (int i = 1; i < RANKNUM; i++) {
+        if (ary[max_index] < ary[i]) {
+            max_index = i;
+        }
+    }
+    return max_index;
+}
+
+void sortResultData(string *img_list, long *dist_list) {
+    for (int i = 0; i < RANKNUM; i++) {
+        for (int j = RANKNUM - 1; j > i; j--) {
+            if (dist_list[j] < dist_list[j-1]) {
+                long tmp_dist = dist_list[j];
+                dist_list[j] = dist_list[j-1];
+                dist_list[j-1] = tmp_dist;
+                
+                string tmp_img = img_list[j];
+                img_list[j] = img_list[j-1];
+                img_list[j-1] = tmp_img;
+            }
+        }
     }
 }
 
 int main(int argc, const char * argv[]) {
+    if (argc != 2) {
+        cout << "引数の数が間違っています" << endl;
+        return -1;
+    }
     vector<string> imgs = getImages(argv[1]);
     unordered_map<string, string> histgram = readHistgram();
     for(string img : imgs) {
