@@ -6,32 +6,12 @@
 //  Copyright © 2017年 室川優希. All rights reserved.
 //
 
-#include <iostream>
-#include <unordered_map>
+#include "image_search.h"
 #include<fstream>
 #include <cmath>
 #include <dirent.h>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
-
-#define RANKNUM 10
-
-using namespace std;
-
-// 文字列の分割
-void split(const string &s, char delim, long *vec);
-// 検索ディレクトリ内の画像一覧を取得
-vector<string> getImages(const char *path);
-// ヒストグラムファイルの読み込み
-unordered_map<string, string> readHistgram();
-// 入力画像のヒストグラム作成
-void getHistgram(std::string input_path, long *input_histgram);
-// 類似画像検索
-void searchSimilarImage(string input_path, unordered_map<string, string> histgram);
-// 距離が最大のインデックスを取得
-int getMaxIndex(const long *ary);
-// 結果のソート
-void sortResultData(string *img_list, long *dist_list);
 
 void split(const string &s, char delim, long *vec) {
     vector<string> elems;

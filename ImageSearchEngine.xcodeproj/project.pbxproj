@@ -49,6 +49,7 @@
 		4F8B578B1FC94304005C0EF1 /* libopencv_imgproc.3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.3.3.1.dylib; path = ../../../../../usr/local/Cellar/opencv/3.3.1_1/lib/libopencv_imgproc.3.3.1.dylib; sourceTree = "<group>"; };
 		4F8B578C1FC94304005C0EF1 /* libopencv_imgproc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.dylib; path = ../../../../../usr/local/Cellar/opencv/3.3.1_1/lib/libopencv_imgproc.dylib; sourceTree = "<group>"; };
 		4F8B578D1FC94304005C0EF1 /* libopencv_imgproc.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.3.3.dylib; path = ../../../../../usr/local/Cellar/opencv/3.3.1_1/lib/libopencv_imgproc.3.3.dylib; sourceTree = "<group>"; };
+		4FC405CC1FCACC2300497500 /* image_search.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = image_search.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +78,7 @@
 		4F8B57651FC941E9005C0EF1 = {
 			isa = PBXGroup;
 			children = (
+				4FC405CB1FCACBE400497500 /* header */,
 				4F8B57701FC941E9005C0EF1 /* ImageSearchEngine */,
 				4F8B576F1FC941E9005C0EF1 /* Products */,
 				4F8B57781FC9425F005C0EF1 /* Frameworks */,
@@ -116,6 +118,14 @@
 				4F8B577B1FC9425F005C0EF1 /* libopencv_core.dylib */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4FC405CB1FCACBE400497500 /* header */ = {
+			isa = PBXGroup;
+			children = (
+				4FC405CC1FCACC2300497500 /* image_search.h */,
+			);
+			path = header;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
